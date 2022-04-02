@@ -35,9 +35,17 @@ public class WorkoutLogController {
     @PostMapping
     public ResponseEntity<?> createWorkoutLog(@AuthenticationPrincipal String userId, @RequestBody WorkoutLogDTO workoutLogDTO) {
         WorkoutLogEntity entity = WorkoutLogDTO.toEntity(workoutLogDTO, userRepository.findById(userId).get());
+        entity.setId(null);
         List<WorkoutLogEntity> entities = service.create(entity);
         List<WorkoutLogDTO> dtos = entities.stream().map(WorkoutLogDTO::new).collect(Collectors.toList());
         ResponseDTO<WorkoutLogDTO> response = ResponseDTO.<WorkoutLogDTO>builder().data(dtos).build();
         return ResponseEntity.ok().body(response);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteWorkoutLog(@AuthenticationPrincipal String userId, @RequestBody WorkoutLogDTO workoutLogDTO) {
+        WorkoutLogEntity entity = WorkoutLogDTO.toEntity(workoutLogDTO, userRepository.findById(userId).get());
+        service.delete(entity);
+        return ResponseEntity.ok().body(null);
     }
 }

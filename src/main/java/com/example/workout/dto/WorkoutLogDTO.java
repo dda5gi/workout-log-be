@@ -34,6 +34,7 @@ public class WorkoutLogDTO {
 
     public static WorkoutLogEntity toEntity(final com.example.workout.dto.WorkoutLogDTO dto, UserEntity userEntity) {
         return WorkoutLogEntity.builder()
+                .id(dto.getId())
                 .user(userEntity)
                 .date(dto.getDate())
                 .set_order(dto.getSet_order())

@@ -28,4 +28,8 @@ public class WorkoutLogService {
         log.info("Entity Id : {} is saved", entity.getId());
         return repository.findById(entity.getId());
     }
+
+    public void delete(final WorkoutLogEntity entity) {
+        repository.delete(entity);
+    }
 }
