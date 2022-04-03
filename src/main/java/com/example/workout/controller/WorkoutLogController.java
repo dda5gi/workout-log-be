@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,8 +28,8 @@ public class WorkoutLogController {
     @GetMapping
     public ResponseEntity<?> retrieveWorkoutLog(@AuthenticationPrincipal String userId, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
         List<WorkoutLogEntity> entities = service.retrieve(date, userRepository.findById(userId).get());
-        List<WorkoutLogDTO> dtos = entities.stream().map(WorkoutLogDTO::new).collect(Collectors.toList());
-        ResponseDTO<WorkoutLogDTO> response = ResponseDTO.<WorkoutLogDTO>builder().data(dtos).build();
+        List<WorkoutLogDTO> workoutDtos = entities.stream().map(WorkoutLogDTO::new).collect(Collectors.toList());
+        ResponseDTO<WorkoutLogDTO> response = ResponseDTO.<WorkoutLogDTO>builder().data(workoutDtos).build();
         return ResponseEntity.ok().body(response);
     }
 
@@ -36,9 +37,10 @@ public class WorkoutLogController {
     public ResponseEntity<?> createWorkoutLog(@AuthenticationPrincipal String userId, @RequestBody WorkoutLogDTO workoutLogDTO) {
         WorkoutLogEntity entity = WorkoutLogDTO.toEntity(workoutLogDTO, userRepository.findById(userId).get());
         entity.setId(null);
-        List<WorkoutLogEntity> entities = service.create(entity);
-        List<WorkoutLogDTO> dtos = entities.stream().map(WorkoutLogDTO::new).collect(Collectors.toList());
-        ResponseDTO<WorkoutLogDTO> response = ResponseDTO.<WorkoutLogDTO>builder().data(dtos).build();
+        WorkoutLogEntity createdEntity = service.create(entity);
+        List<WorkoutLogDTO> workoutDtos = new ArrayList<>();
+        workoutDtos.add(new WorkoutLogDTO(createdEntity));
+        ResponseDTO<WorkoutLogDTO> response = ResponseDTO.<WorkoutLogDTO>builder().data(workoutDtos).build();
         return ResponseEntity.ok().body(response);
     }
 
@@ -47,5 +49,15 @@ public class WorkoutLogController {
         WorkoutLogEntity entity = WorkoutLogDTO.toEntity(workoutLogDTO, userRepository.findById(userId).get());
         service.delete(entity);
         return ResponseEntity.ok().body(null);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateWorkoutLog(@AuthenticationPrincipal String userId, @RequestBody WorkoutLogDTO workoutLogDTO) {
+        WorkoutLogEntity entity = WorkoutLogDTO.toEntity(workoutLogDTO, userRepository.findById(userId).get());
+        WorkoutLogEntity createdEntity = service.update(entity);
+        List<WorkoutLogDTO> workoutDtos = new ArrayList<>();
+        workoutDtos.add(new WorkoutLogDTO(createdEntity));
+        ResponseDTO<WorkoutLogDTO> response = ResponseDTO.<WorkoutLogDTO>builder().data(workoutDtos).build();
+        return ResponseEntity.ok().body(response);
     }
 }

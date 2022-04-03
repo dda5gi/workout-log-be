@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -23,13 +24,29 @@ public class WorkoutLogService {
         return entity;
     }
 
-    public List<WorkoutLogEntity> create(final WorkoutLogEntity entity) {
+    public WorkoutLogEntity create(final WorkoutLogEntity entity) {
         repository.save(entity);
         log.info("Entity Id : {} is saved", entity.getId());
-        return repository.findById(entity.getId());
+        return repository.findById(entity.getId()).get();
     }
 
     public void delete(final WorkoutLogEntity entity) {
         repository.delete(entity);
+    }
+
+    public WorkoutLogEntity update(final WorkoutLogEntity entity) {
+        final Optional<WorkoutLogEntity> original = repository.findById(entity.getId());
+        original.ifPresent(workoutLog -> {
+            workoutLog.setId(entity.getId());
+            workoutLog.setUser(entity.getUser());
+            workoutLog.setDate(entity.getDate());
+            workoutLog.setName(entity.getName());
+            workoutLog.setReps(entity.getReps());
+            workoutLog.setTarget(entity.getTarget());
+            workoutLog.setSet_order(entity.getSet_order());
+            repository.save(workoutLog);
+        });
+
+        return repository.findById(entity.getId()).get();
     }
 }
