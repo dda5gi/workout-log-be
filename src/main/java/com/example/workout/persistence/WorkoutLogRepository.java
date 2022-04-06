@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public interface WorkoutLogRepository extends JpaRepository<WorkoutLogEntity, String> {
+public interface WorkoutLogRepository extends JpaRepository<WorkoutLogEntity, Long> {
     Optional<WorkoutLogEntity> findById(Long id);
     List<WorkoutLogEntity> findByDateAndUser(LocalDate date, UserEntity user);
 }

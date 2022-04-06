@@ -32,7 +32,7 @@ public class WorkoutLogDTO {
         this.reps = entity.getReps();
     }
 
-    public static WorkoutLogEntity toEntity(final com.example.workout.dto.WorkoutLogDTO dto, UserEntity userEntity) {
+    public static WorkoutLogEntity toEntity(final WorkoutLogDTO dto, UserEntity userEntity) {
         return WorkoutLogEntity.builder()
                 .id(dto.getId())
                 .user(userEntity)
