@@ -27,7 +27,7 @@ public class WorkoutLogEntity {
     private LocalDate date;
 
     @Column(nullable = false)
-    private int set_order;
+    private int setOrder;
 
     private String target;
 

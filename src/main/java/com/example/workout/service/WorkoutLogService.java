@@ -43,7 +43,7 @@ public class WorkoutLogService {
             workoutLog.setName(entity.getName());
             workoutLog.setReps(entity.getReps());
             workoutLog.setTarget(entity.getTarget());
-            workoutLog.setSet_order(entity.getSet_order());
+            workoutLog.setSetOrder(entity.getSetOrder());
             repository.save(workoutLog);
         });
 

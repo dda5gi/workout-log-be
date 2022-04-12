@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class WorkoutLogDTO {
     private Long id;
     private LocalDate date;
-    private int set_order;
+    private int setOrder;
     private String target;
     private String name;
     private String weight;
@@ -25,7 +25,7 @@ public class WorkoutLogDTO {
     public WorkoutLogDTO(final WorkoutLogEntity entity) {
         this.id = entity.getId();
         this.date = entity.getDate();
-        this.set_order = entity.getSet_order();
+        this.setOrder = entity.getSetOrder();
         this.target = entity.getTarget();
         this.name = entity.getName();
         this.weight = entity.getWeight();
@@ -37,7 +37,7 @@ public class WorkoutLogDTO {
                 .id(dto.getId())
                 .user(userEntity)
                 .date(dto.getDate())
-                .set_order(dto.getSet_order())
+                .setOrder(dto.getSetOrder())
                 .target(dto.getTarget())
                 .name(dto.getName())
                 .weight(dto.getWeight())
