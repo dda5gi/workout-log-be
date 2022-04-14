@@ -34,7 +34,7 @@ public class WorkoutLogEntity {
     @Column(nullable = false)
     private String name;
 
-    private String weight;
+    private String weights;
 
     @Column(nullable = false)
     private String reps;

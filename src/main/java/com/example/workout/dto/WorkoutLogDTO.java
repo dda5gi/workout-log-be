@@ -19,7 +19,7 @@ public class WorkoutLogDTO {
     private int setOrder;
     private String target;
     private String name;
-    private String weight;
+    private String weights;
     private String reps;
 
     public WorkoutLogDTO(final WorkoutLogEntity entity) {
@@ -28,7 +28,7 @@ public class WorkoutLogDTO {
         this.setOrder = entity.getSetOrder();
         this.target = entity.getTarget();
         this.name = entity.getName();
-        this.weight = entity.getWeight();
+        this.weights = entity.getWeights();
         this.reps = entity.getReps();
     }
 
@@ -40,7 +40,7 @@ public class WorkoutLogDTO {
                 .setOrder(dto.getSetOrder())
                 .target(dto.getTarget())
                 .name(dto.getName())
-                .weight(dto.getWeight())
+                .weights(dto.getWeights())
                 .reps(dto.getReps())
                 .build();
     }
