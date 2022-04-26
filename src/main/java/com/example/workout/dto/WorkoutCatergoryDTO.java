@@ -7,13 +7,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class WorkoutCatergoryDTO {
     private Long id;
+    @NotBlank
     private String name;
+    @NotBlank
     private String target;
 
     public WorkoutCatergoryDTO(final WorkoutCategoryEntity entity) {

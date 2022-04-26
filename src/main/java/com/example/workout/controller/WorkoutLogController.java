@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class WorkoutLogController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createWorkoutLog(@AuthenticationPrincipal String userId, @RequestBody WorkoutLogDTO workoutLogDTO) {
+    public ResponseEntity<?> createWorkoutLog(@AuthenticationPrincipal String userId, @Valid @RequestBody WorkoutLogDTO workoutLogDTO) {
         WorkoutLogEntity entity = WorkoutLogDTO.toEntity(workoutLogDTO, userRepository.findById(userId).get());
         entity.setId(null);
         WorkoutLogEntity createdEntity = service.create(entity);
@@ -45,14 +46,14 @@ public class WorkoutLogController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteWorkoutLog(@AuthenticationPrincipal String userId, @RequestBody WorkoutLogDTO workoutLogDTO) {
+    public ResponseEntity<?> deleteWorkoutLog(@AuthenticationPrincipal String userId, @Valid @RequestBody WorkoutLogDTO workoutLogDTO) {
         WorkoutLogEntity entity = WorkoutLogDTO.toEntity(workoutLogDTO, userRepository.findById(userId).get());
         service.delete(entity);
         return ResponseEntity.ok().body(null);
     }
 
     @PutMapping
-    public ResponseEntity<?> updateWorkoutLog(@AuthenticationPrincipal String userId, @RequestBody WorkoutLogDTO workoutLogDTO) {
+    public ResponseEntity<?> updateWorkoutLog(@AuthenticationPrincipal String userId, @Valid @RequestBody WorkoutLogDTO workoutLogDTO) {
         WorkoutLogEntity entity = WorkoutLogDTO.toEntity(workoutLogDTO, userRepository.findById(userId).get());
         WorkoutLogEntity createdEntity = service.update(entity);
         List<WorkoutLogDTO> workoutDtos = new ArrayList<>();

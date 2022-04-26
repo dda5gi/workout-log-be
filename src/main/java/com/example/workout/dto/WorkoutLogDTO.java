@@ -7,6 +7,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Builder //builder 클래스를 따로 작성치 않아도 패턴을 통해 오브젝트 생성 가능
@@ -15,11 +19,17 @@ import java.time.LocalDate;
 @Data //getter setter 메서드 구현해줌
 public class WorkoutLogDTO {
     private Long id;
+    @NotNull
     private LocalDate date;
+    @Min(value = 1)
     private int setOrder;
+    @NotBlank
     private String target;
+    @NotBlank
     private String name;
+    @NotBlank
     private String weights;
+    @NotBlank
     private String reps;
 
     public WorkoutLogDTO(final WorkoutLogEntity entity) {

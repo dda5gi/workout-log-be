@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ public class WorkoutCategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createWorkoutCategory(@AuthenticationPrincipal String userId, @RequestBody WorkoutCatergoryDTO workoutCatergoryDTO) {
+    public ResponseEntity<?> createWorkoutCategory(@AuthenticationPrincipal String userId, @Valid @RequestBody WorkoutCatergoryDTO workoutCatergoryDTO) {
         // 커스텀 운동 등록
         WorkoutCategoryEntity entity = WorkoutCatergoryDTO.toEntity(workoutCatergoryDTO, userRepository.findById(userId).get());
         entity.setId(null);
@@ -46,7 +47,7 @@ public class WorkoutCategoryController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteWorkoutCategory(@AuthenticationPrincipal String userId, @RequestBody WorkoutCatergoryDTO workoutCatergoryDTO) {
+    public ResponseEntity<?> deleteWorkoutCategory(@AuthenticationPrincipal String userId, @Valid @RequestBody WorkoutCatergoryDTO workoutCatergoryDTO) {
         WorkoutCategoryEntity entity = WorkoutCatergoryDTO.toEntity(workoutCatergoryDTO, userRepository.findById(userId).get());
         service.delete(entity);
         return ResponseEntity.ok().body(null);
