@@ -40,9 +40,7 @@ public class TodoController {
             ResponseDTO<TodoDTO> response = ResponseDTO.<TodoDTO>builder().data(dtos).build();
             return ResponseEntity.ok().body(response);
         }catch (Exception e) {
-            String error = e.getMessage();
-            ResponseDTO<TodoDTO> response = ResponseDTO.<TodoDTO>builder().error(error).build();
-            return ResponseEntity.badRequest().body(response);
+            throw new RuntimeException();
         }
     }
 
@@ -77,9 +75,7 @@ public class TodoController {
             return ResponseEntity.ok().body(response);
         }
         catch (Exception e) {
-            String error = e.getMessage();
-            ResponseDTO<TodoDTO> response = ResponseDTO.<TodoDTO>builder().error(error).build();
-            return ResponseEntity.badRequest().body(response);
+            throw new RuntimeException();
         }
     }
 }

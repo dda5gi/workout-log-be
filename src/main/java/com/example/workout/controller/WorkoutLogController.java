@@ -30,7 +30,7 @@ public class WorkoutLogController {
     public ResponseEntity<?> retrieveWorkoutLog(@AuthenticationPrincipal String userId, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
         List<WorkoutLogEntity> entities = service.retrieve(date, userRepository.findById(userId).get());
         List<WorkoutLogDTO> workoutDtos = entities.stream().map(WorkoutLogDTO::new).collect(Collectors.toList());
-        ResponseDTO<WorkoutLogDTO> response = ResponseDTO.<WorkoutLogDTO>builder().data(workoutDtos).build();
+        ResponseDTO<WorkoutLogDTO> response = ResponseDTO.<WorkoutLogDTO>builder().message("로드 성공").data(workoutDtos).build();
         return ResponseEntity.ok().body(response);
     }
 
@@ -41,7 +41,7 @@ public class WorkoutLogController {
         WorkoutLogEntity createdEntity = service.create(entity);
         List<WorkoutLogDTO> workoutDtos = new ArrayList<>();
         workoutDtos.add(new WorkoutLogDTO(createdEntity));
-        ResponseDTO<WorkoutLogDTO> response = ResponseDTO.<WorkoutLogDTO>builder().data(workoutDtos).build();
+        ResponseDTO<WorkoutLogDTO> response = ResponseDTO.<WorkoutLogDTO>builder().message("등록 성공").data(workoutDtos).build();
         return ResponseEntity.ok().body(response);
     }
 
@@ -49,7 +49,8 @@ public class WorkoutLogController {
     public ResponseEntity<?> deleteWorkoutLog(@AuthenticationPrincipal String userId, @Valid @RequestBody WorkoutLogDTO workoutLogDTO) {
         WorkoutLogEntity entity = WorkoutLogDTO.toEntity(workoutLogDTO, userRepository.findById(userId).get());
         service.delete(entity);
-        return ResponseEntity.ok().body(null);
+        ResponseDTO<WorkoutLogDTO> response = ResponseDTO.<WorkoutLogDTO>builder().message("삭제 성공").build();
+        return ResponseEntity.ok().body(response);
     }
 
     @PutMapping
@@ -58,7 +59,7 @@ public class WorkoutLogController {
         WorkoutLogEntity createdEntity = service.update(entity);
         List<WorkoutLogDTO> workoutDtos = new ArrayList<>();
         workoutDtos.add(new WorkoutLogDTO(createdEntity));
-        ResponseDTO<WorkoutLogDTO> response = ResponseDTO.<WorkoutLogDTO>builder().data(workoutDtos).build();
+        ResponseDTO<WorkoutLogDTO> response = ResponseDTO.<WorkoutLogDTO>builder().message("수정 성공").data(workoutDtos).build();
         return ResponseEntity.ok().body(response);
     }
 }

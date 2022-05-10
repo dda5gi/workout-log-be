@@ -1,5 +1,6 @@
 package com.example.workout.service;
 
+import com.example.workout.error.exception.EntityNotFoundException;
 import com.example.workout.model.UserEntity;
 import com.example.workout.model.WorkoutLogEntity;
 import com.example.workout.persistence.WorkoutLogRepository;
@@ -31,22 +32,13 @@ public class WorkoutLogService {
     }
 
     public void delete(final WorkoutLogEntity entity) {
+        repository.findById(entity.getId()).orElseThrow(() -> new EntityNotFoundException());
         repository.delete(entity);
     }
 
     public WorkoutLogEntity update(final WorkoutLogEntity entity) {
-        final Optional<WorkoutLogEntity> original = repository.findById(entity.getId());
-        original.ifPresent(workoutLog -> {
-            workoutLog.setId(entity.getId());
-            workoutLog.setUser(entity.getUser());
-            workoutLog.setDate(entity.getDate());
-            workoutLog.setName(entity.getName());
-            workoutLog.setReps(entity.getReps());
-            workoutLog.setTarget(entity.getTarget());
-            workoutLog.setSetOrder(entity.getSetOrder());
-            repository.save(workoutLog);
-        });
-
+        repository.findById(entity.getId()).orElseThrow(() -> new EntityNotFoundException());
+        repository.save(entity);
         return repository.findById(entity.getId()).get();
     }
 }

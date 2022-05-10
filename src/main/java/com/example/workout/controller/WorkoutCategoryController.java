@@ -2,6 +2,7 @@ package com.example.workout.controller;
 
 import com.example.workout.dto.ResponseDTO;
 import com.example.workout.dto.WorkoutCatergoryDTO;
+import com.example.workout.dto.WorkoutLogDTO;
 import com.example.workout.model.WorkoutCategoryEntity;
 import com.example.workout.persistence.UserRepository;
 import com.example.workout.service.WorkoutCategoryService;
@@ -33,7 +34,7 @@ public class WorkoutCategoryController {
         entities.addAll(originalData);
         entities.addAll(customData);
         List<WorkoutCatergoryDTO> workoutCatergoryDtos = entities.stream().map(WorkoutCatergoryDTO::new).collect(Collectors.toList());
-        ResponseDTO<WorkoutCatergoryDTO> response = ResponseDTO.<WorkoutCatergoryDTO>builder().data(workoutCatergoryDtos).build();
+        ResponseDTO<WorkoutCatergoryDTO> response = ResponseDTO.<WorkoutCatergoryDTO>builder().message("로드 성공").data(workoutCatergoryDtos).build();
         return ResponseEntity.ok().body(response);
     }
 
@@ -42,14 +43,18 @@ public class WorkoutCategoryController {
         // 커스텀 운동 등록
         WorkoutCategoryEntity entity = WorkoutCatergoryDTO.toEntity(workoutCatergoryDTO, userRepository.findById(userId).get());
         entity.setId(null);
-        service.create(entity);
-        return ResponseEntity.ok().body(null);
+        WorkoutCategoryEntity createdEntity = service.create(entity);
+        List<WorkoutCatergoryDTO> workoutCategoryDtos = new ArrayList<>();
+        workoutCategoryDtos.add(new WorkoutCatergoryDTO(createdEntity));
+        ResponseDTO<WorkoutCatergoryDTO> response = ResponseDTO.<WorkoutCatergoryDTO>builder().message("등록 성공").data(workoutCategoryDtos).build();
+        return ResponseEntity.ok().body(response);
     }
 
     @DeleteMapping
     public ResponseEntity<?> deleteWorkoutCategory(@AuthenticationPrincipal String userId, @Valid @RequestBody WorkoutCatergoryDTO workoutCatergoryDTO) {
         WorkoutCategoryEntity entity = WorkoutCatergoryDTO.toEntity(workoutCatergoryDTO, userRepository.findById(userId).get());
         service.delete(entity);
-        return ResponseEntity.ok().body(null);
+        ResponseDTO<WorkoutCatergoryDTO> response = ResponseDTO.<WorkoutCatergoryDTO>builder().message("삭제 성공").build();
+        return ResponseEntity.ok().body(response);
     }
 }

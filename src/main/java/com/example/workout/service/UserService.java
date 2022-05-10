@@ -1,11 +1,15 @@
 package com.example.workout.service;
 
+import com.example.workout.error.exception.EntityNotFoundException;
+import com.example.workout.error.exception.PasswordNotMatchedException;
 import com.example.workout.model.UserEntity;
 import com.example.workout.persistence.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -27,11 +31,13 @@ public class UserService {
     }
 
     public UserEntity getByCredentials(final String email, final String password, final PasswordEncoder encoder) {
-        final UserEntity originalUser = userRepository.findByEmail(email);
-
-        if(originalUser != null && encoder.matches(password, originalUser.getPassword())) {
-            return originalUser;
+        final Optional<UserEntity> originalUser = userRepository.findByEmail(email);
+        originalUser.orElseThrow(() -> new EntityNotFoundException());
+        if(encoder.matches(password, originalUser.get().getPassword())) {
+            return originalUser.get();
         }
-        return null;
+        else {
+            throw new PasswordNotMatchedException();
+        }
     }
 }

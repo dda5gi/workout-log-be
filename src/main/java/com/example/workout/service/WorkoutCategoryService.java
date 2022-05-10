@@ -1,5 +1,6 @@
 package com.example.workout.service;
 
+import com.example.workout.error.exception.EntityNotFoundException;
 import com.example.workout.model.WorkoutCategoryEntity;
 import com.example.workout.persistence.WorkoutCategoryRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -30,5 +31,7 @@ public class WorkoutCategoryService {
         return repository.findById(entity.getId()).get();
     }
 
-    public void delete(final WorkoutCategoryEntity entity) { repository.delete(entity); }
+    public void delete(final WorkoutCategoryEntity entity) {
+        repository.findById(entity.getId()).orElseThrow(() -> new EntityNotFoundException());
+        repository.delete(entity); }
 }
