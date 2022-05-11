@@ -51,7 +51,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponse> handlePasswordNotMatched(PasswordNotMatchedException e) {
         log.error("handlePasswordNotMatched", e);
         final ErrorResponse response = ErrorResponse.of(ErrorCode.PASSWORD_NOT_MATCHED);
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

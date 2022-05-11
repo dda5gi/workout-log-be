@@ -33,6 +33,15 @@ public class WorkoutLogService {
 
     public void delete(final WorkoutLogEntity entity) {
         repository.findById(entity.getId()).orElseThrow(() -> new EntityNotFoundException());
+        int setOrder = entity.getSetOrder();
+        List<WorkoutLogEntity> workoutLogEntities = repository.findByDate(entity.getDate());
+        // 엔티티 삭제하기 전에 이후 세트들의 세트 순서를 1씩 낮춰줌
+        for (WorkoutLogEntity e : workoutLogEntities) {
+            if(setOrder < e.getSetOrder()) {
+                e.setSetOrder(e.getSetOrder()-1);
+                update(e);
+            }
+        }
         repository.delete(entity);
     }
 

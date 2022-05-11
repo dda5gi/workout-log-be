@@ -10,5 +10,6 @@ import java.util.Optional;
 
 public interface WorkoutLogRepository extends JpaRepository<WorkoutLogEntity, Long> {
     Optional<WorkoutLogEntity> findById(Long id);
+    List<WorkoutLogEntity> findByDate(LocalDate date);
     List<WorkoutLogEntity> findByDateAndUser(LocalDate date, UserEntity user);
 }
